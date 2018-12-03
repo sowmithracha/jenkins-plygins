@@ -1,0 +1,43 @@
+---
+ - hosts: web1
+   vars: 
+     jenkins_admin_user: admin
+     jenkins_admin_pass: admin123
+     #ansible_default_ipv4.address: "54.173.204.128"
+     jenkins_http_port: 8080
+     jenkins_home: "/var/lib/jenkins" 
+   tasks:
+   - name: Install jenkins plugins
+     jenkins_plugin:
+       name: "{{ item }}"
+       url_username: "{{ jenkins_admin_user }}"
+       url_password: "{{ jenkins_admin_pass }}"
+       #url: "http://{{ ansible_default_ipv4.address}}:{{jenkins_http_port}}"
+       url: http://54.173.204.128:{{jenkins_http_port}}
+       #jenkins_home: "{{jenkins_home}}"
+       jenkins_home: /var/lib/jenkins
+     with_items:
+     - git
+     - deploy
+     - sonar
+     notify: restart_jenkins
+
+   - name: force jenkins to restart after plugin installation
+     meta: flush_handlers
+   
+   - name: create node dirs
+     file: path="{{jenkins_home}}/nodes/{{item}}" state=directory
+     with_items:
+       - node1
+       - node2
+
+   - name: create node config
+     template: src=node.xml.j2 dest="{{jenkins_home}}/nodes/{{item.name}}/config.xml"
+     with_items:
+       - { 'name':'node1' , 'ip':'172.12.3.4'}
+       - { 'name':'node2' , 'ip':'172.12.3.5'}
+
+   handlers:
+     - name: restart_jenkins
+       service: name=jenkins state=restarted
+

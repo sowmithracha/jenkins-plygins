@@ -1,0 +1,12 @@
+[server]
+
+172.31.94.112
+
+[web]
+
+172.31.84.173 ansible_ssh_user=root ansible_ssh_pass=12345
+
+[web1]
+
+172.31.85.44 
+#ansible_ssh-user=root ansible_ssh_pass=12345

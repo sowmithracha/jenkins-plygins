@@ -1,0 +1,6 @@
+---
+- hosts: all
+  become: true
+  tasks: 
+  - name: copy file
+    copy: src=/home/ansadmin/devops/CounterWebApp.war dest=/opt/apache-tomcat-9.0.13/webapps/
