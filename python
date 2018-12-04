@@ -1,0 +1,32 @@
+jenkins node
+
+
+
+1. install python
+pyhon3.6
+
+sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+sudo yum update
+sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
+python3.6 -V
+
+2. alternatives
+alternatives --install /usr/bin/python python /usr/bin/python3.6 60
+alternatives --config python -- to select the version of python3.6
+
+3. install pip
+python3.6 -m pip install --upgrade pip
+
+4. install "Development Tools" package 
+yum groupinstall "Development Tools" -y
+( yum install gcc -y)
+
+5. install package jenkin-utils using pip
+python -m pip install jenkins-utils
+
+
+6. to download invoke.py from tar file
+https://files.pythonhosted.org/packages/16/6d/1ab582bd74b270ef53f698bba6256445d2ed9d5d4add15357853be09eb59/jenkins-utils-0.1.1.tar.gz
+
+7. execute python script 
+python invoke.py --master-key master.key --hudson-secret-key hudson.util.Secret --aes-type cbc --action encrypt "userpasswd"
